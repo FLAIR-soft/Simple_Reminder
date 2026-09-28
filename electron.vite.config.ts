@@ -22,7 +22,6 @@ function csp(): Plugin {
         dev ? "connect-src 'self' ws://localhost:*" : "connect-src 'self'",
         "base-uri 'none'",
         "form-action 'none'",
-        "frame-ancestors 'none'",
         "object-src 'none'"
       ].join('; ')
       return html.replace('<!--CSP-->', `<meta http-equiv="Content-Security-Policy" content="${policy}">`)
@@ -41,6 +40,7 @@ export default defineConfig({
   renderer: {
     resolve: { alias: { '@shared': resolve('src/shared') } },
     plugins: [react(), csp()],
-    build: { sourcemap: false }
+    // Never inline assets as data: URLs — the CSP allows fonts only from 'self'.
+    build: { sourcemap: false, assetsInlineLimit: 0 }
   }
 })

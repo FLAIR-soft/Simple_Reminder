@@ -1,4 +1,4 @@
-import { BrowserWindow, screen, type Rectangle } from 'electron'
+import { app, BrowserWindow, screen, type Rectangle } from 'electron'
 import path from 'node:path'
 import type { ResizeEdge } from '../shared/api'
 import type { Bounds, Settings } from '../shared/model'
@@ -21,7 +21,8 @@ export function webPreferences(): Electron.WebPreferences {
     allowRunningInsecureContent: false,
     spellcheck: false,
     autoplayPolicy: 'no-user-gesture-required',
-    devTools: !process.env.REMINDER_NO_DEVTOOLS
+    // No DevTools in the installed app.
+    devTools: !app.isPackaged && !process.env.REMINDER_NO_DEVTOOLS
   }
 }
 

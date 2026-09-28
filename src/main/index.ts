@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { app, BrowserWindow, dialog, ipcMain, powerMonitor, shell, type IpcMainInvokeEvent } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme, powerMonitor, shell, type IpcMainInvokeEvent } from 'electron'
 import { z } from 'zod'
 import { CH, type Result } from '../shared/api'
 import {
@@ -23,6 +23,7 @@ import {
   updateEvent
 } from '../shared/scheduler'
 import { intervalProblem } from '../shared/time'
+import { Backdrop } from './backdrop'
 import { Controller } from './controller'
 import { hardenApp, isAppUrl } from './security'
 import { handleSoundScheme, importSound, registerSoundScheme, soundUrl } from './sound'
@@ -44,7 +45,8 @@ if (!app.requestSingleInstanceLock()) {
 
 function main(): void {
   const rendererUrl = process.env['ELECTRON_RENDERER_URL']
-  hardenApp(rendererUrl)
+  let backdrop: Backdrop | null = null
+  hardenApp(rendererUrl, (wc) => !!backdrop?.owns(wc))
 
   let controller: Controller
   let mainWin: BrowserWindow | null = null
@@ -126,11 +128,14 @@ function main(): void {
 
   // ---------- Window behaviour from settings ----------
   function applyWindowSettings(s: Settings): void {
+    // Native menus (tray) follow the app theme.
+    nativeTheme.themeSource = s.theme === 'graphite' ? 'dark' : 'light'
     if (mainWin && !mainWin.isDestroyed()) {
       mainWin.setAlwaysOnTop(s.alwaysOnTop, 'floating')
       mainWin.setMovable(!s.lockPosition)
       if (s.clickThrough) mainWin.setIgnoreMouseEvents(true, { forward: true })
       else mainWin.setIgnoreMouseEvents(false)
+      backdrop?.setEnabled(s.blur)
     }
     if (app.isPackaged) {
       const cur = app.getLoginItemSettings().openAtLogin
@@ -283,6 +288,7 @@ function main(): void {
     })
 
     mainWin = createMainWindow(controller.state.settings)
+    backdrop = new Backdrop(mainWin)
     mainWin.once('ready-to-show', () => {
       if (!process.argv.includes('--hidden')) mainWin?.show()
     })
@@ -340,6 +346,7 @@ function main(): void {
   app.on('before-quit', () => {
     quitting = true
     resizer.stop()
+    backdrop?.stop()
     controller?.shutdown()
     tray?.destroy()
     for (const w of [notifyWin, missedWin]) if (w && !w.isDestroyed()) w.setClosable(true)

@@ -84,6 +84,8 @@ export const SettingsSchema = z.object({
   /** Window background opacity, 40–100 (%). */
   opacity: z.number().int().min(40).max(100),
   alwaysOnTop: z.boolean(),
+  /** Custom blur of the desktop behind the main window. Older data files without it get `true`. */
+  blur: z.boolean().default(true),
   lockPosition: z.boolean(),
   clickThrough: z.boolean(),
   startWithWindows: z.boolean(),
@@ -124,7 +126,10 @@ export type EventInput = z.infer<typeof EventInputSchema>
 
 export const IdSchema = z.string().min(1).max(64)
 
-export const SettingsPatchSchema = SettingsSchema.omit({ bounds: true }).partial()
+// `blur` is re-declared without its default, so a patch that does not mention it never turns it back on.
+export const SettingsPatchSchema = SettingsSchema.omit({ bounds: true, blur: true })
+  .partial()
+  .extend({ blur: z.boolean().optional() })
 export type SettingsPatch = z.infer<typeof SettingsPatchSchema>
 
 export const CategoryInputSchema = CategorySchema.omit({ id: true })
@@ -134,6 +139,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'ivory',
   opacity: 82,
   alwaysOnTop: true,
+  blur: true,
   lockPosition: false,
   clickThrough: false,
   startWithWindows: false,

@@ -12,6 +12,8 @@ const api: ReminderApi = {
   onSnapshot: (cb) => listen(CH.snapshot, cb),
   onNavigate: (cb) => listen(CH.navigate, cb),
   onPlaySound: (cb) => listen(CH.playSound, cb),
+  onBackdrop: (cb) => listen(CH.backdrop, cb),
+  onWindowPos: (cb) => listen(CH.windowPos, cb),
 
   createEvent: (input) => ipcRenderer.invoke(CH.createEvent, input),
   updateEvent: (id, input) => ipcRenderer.invoke(CH.updateEvent, id, input),
