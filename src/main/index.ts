@@ -139,7 +139,8 @@ function main(): void {
     }
     if (app.isPackaged) {
       const cur = app.getLoginItemSettings().openAtLogin
-      if (cur !== s.startWithWindows) app.setLoginItemSettings({ openAtLogin: s.startWithWindows })
+      // At login the app starts hidden in the tray.
+      if (cur !== s.startWithWindows) app.setLoginItemSettings({ openAtLogin: s.startWithWindows, args: ['--hidden'] })
     }
     tray?.update(s)
   }
