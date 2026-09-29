@@ -81,7 +81,8 @@
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
       "runAfterFinish": true,
-      "deleteAppDataOnUninstall": false
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "Reminder-Setup.exe"
     },
     "electronFuses": {
       "runAsNode": false,

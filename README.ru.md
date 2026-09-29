@@ -2,7 +2,7 @@
 
 **Небольшая напоминалка для Windows, которая всегда видна поверх окон. У каждой задачи свой таймер и свои рабочие часы. Когда время подходит, по центру экрана появляется карточка и висит, пока вы на неё не отреагируете.**
 
-[English version](README.md)
+**[⬇ Скачать для Windows](https://github.com/FLAIR-soft/Simple_Reminder/releases/latest/download/Reminder-Setup.exe)** · [English version](README.md)
 
 <p>
   <img src="docs/images/cards-ivory.png" width="300" alt="Главное окно, тема Ivory">
@@ -56,7 +56,7 @@ Reminder держит поверх окон полупрозрачное окн�
 
 ## Установка
 
-1. Скачайте `Reminder Setup x.y.z.exe` в разделе [Releases](https://github.com/FLAIR-soft/Simple_Reminder/releases) или соберите сами (см. [Разработка](#разработка)).
+1. **[Скачайте Reminder-Setup.exe](https://github.com/FLAIR-soft/Simple_Reminder/releases/latest/download/Reminder-Setup.exe)**: последняя версия, один файл. Все версии лежат на странице [Releases](https://github.com/FLAIR-soft/Simple_Reminder/releases). Можно и собрать самому (см. [Разработка](#разработка)).
 2. Запустите установщик. Он не подписан, поэтому Windows SmartScreen может показать синее окно. Нажмите **Подробнее → Выполнить в любом случае**.
 3. Выберите папку и завершите установку. Reminder запустится в правом верхнем углу экрана, а в трее появится его значок.
 

@@ -2,11 +2,12 @@ import { app, BrowserWindow, screen, type Rectangle } from 'electron'
 import path from 'node:path'
 import type { ResizeEdge } from '../shared/api'
 import type { Bounds, Settings } from '../shared/model'
+import { resizeBounds } from './resize-math'
 
 export type Route = 'main' | 'notify' | 'missed'
 
-const MIN_W = 300
-const MIN_H = 360
+export const MIN_W = 300
+export const MIN_H = 360
 const DEFAULT_W = 360
 const DEFAULT_H = 600
 
@@ -89,32 +90,16 @@ export class Resizer {
     this.stop()
     const start = win.getBounds()
     const c0 = screen.getCursorScreenPoint()
-    const [minW, minH] = win.getMinimumSize()
+    // Not win.getMinimumSize(): for a non-resizable window Electron pins it to the current size,
+    // which made the window impossible to shrink below its starting height.
+    const minW = MIN_W
+    const minH = MIN_H
+    const area = screen.getDisplayMatching(start).workArea
     let last = ''
     this.timer = setInterval(() => {
       if (win.isDestroyed()) return this.stop()
       const c = screen.getCursorScreenPoint()
-      const dx = c.x - c0.x
-      const dy = c.y - c0.y
-      let { x, y, width, height } = start
-      if (edge.includes('e')) width = start.width + dx
-      if (edge.includes('s')) height = start.height + dy
-      if (edge.includes('w')) {
-        width = start.width - dx
-        x = start.x + dx
-      }
-      if (edge.includes('n')) {
-        height = start.height - dy
-        y = start.y + dy
-      }
-      if (width < minW) {
-        if (edge.includes('w')) x -= minW - width
-        width = minW
-      }
-      if (height < minH) {
-        if (edge.includes('n')) y -= minH - height
-        height = minH
-      }
+      const { x, y, width, height } = resizeBounds(start, edge, c.x - c0.x, c.y - c0.y, { width: minW, height: minH }, area)
       const key = `${x},${y},${width},${height}`
       if (key !== last) {
         last = key

@@ -2,7 +2,7 @@
 
 **A small always-on-top reminder for Windows. Every task gets its own timer and working hours, and when it is due, a card appears in the middle of the screen and stays there until you react.**
 
-[Русская версия](README.ru.md)
+**[⬇ Download for Windows](https://github.com/FLAIR-soft/Simple_Reminder/releases/latest/download/Reminder-Setup.exe)** · [Русская версия](README.ru.md)
 
 <p>
   <img src="docs/images/cards-ivory.png" width="300" alt="Main window, Ivory theme">
@@ -56,7 +56,7 @@ It is built for a working day:
 
 ## Installation
 
-1. Download `Reminder Setup x.y.z.exe` from [Releases](https://github.com/FLAIR-soft/Simple_Reminder/releases), or build it yourself (see [Development](#development)).
+1. **[Download Reminder-Setup.exe](https://github.com/FLAIR-soft/Simple_Reminder/releases/latest/download/Reminder-Setup.exe)**: the latest version, a single file. All versions are on the [Releases](https://github.com/FLAIR-soft/Simple_Reminder/releases) page. You can also build it yourself (see [Development](#development)).
 2. Run the installer. The installer is not code-signed, so Windows SmartScreen may show a blue warning. Click **More info → Run anyway**.
 3. Choose the folder and finish. Reminder starts and appears in the top right corner of the screen, with an icon in the tray.
 
